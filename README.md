@@ -1,5 +1,5 @@
-# open-github.el
-*open-github.el* is utilities for opening github url.
+# helm-open-github.el
+*helm-open-github.el* is utilities for opening github url.
 This is inspired by URL below.
 
 * http://shibayu36.hatenablog.com/entry/2013/01/18/211428
@@ -18,31 +18,31 @@ This is inspired by URL below.
 
 ## Basic Usage
 
-### `open-github-from-commit`
+### `helm-open-github-from-commit`
 
 Open commit page from *commit id*
 
-### `open-github-from-file`
+### `helm-open-github-from-file`
 
 Open file page from *file name*
 
-### `open-github-from-issues`
+### `helm-open-github-from-issues`
 
 Open issue page from *issue ID*
 
 
 ## Customize
 
-### `open-github-commit-limit`
+### `helm-open-github-commit-limit`
 
-Issue number shown by `open-github-from-commit`.(Default is 100)
+Issue number shown by `helm-open-github-from-commit`.(Default is 100)
 
 
 ## Sample Configuration
 
 ```elisp
-(require 'open-github)
-(global-set-key (kbd "C-c o f") 'open-github-from-file)
-(global-set-key (kbd "C-c o c") 'open-github-from-commit)
-(global-set-key (kbd "C-c o i") 'open-github-from-issues)
+(require 'helm-open-github)
+(global-set-key (kbd "C-c o f") 'helm-open-github-from-file)
+(global-set-key (kbd "C-c o c") 'helm-open-github-from-commit)
+(global-set-key (kbd "C-c o i") 'helm-open-github-from-issues)
 ```
