@@ -6,7 +6,7 @@ This is inspired by URL below.
 
 ## screenshot
 
-![open-github-from-commit](image/open-github-from-commit.png)
+![open-github-from-commit](image/helm-open-github-from-commit.png)
 
 
 ## Dependency
