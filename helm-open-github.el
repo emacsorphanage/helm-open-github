@@ -195,7 +195,7 @@
     (helm-open-github--from-file-action file start-line)))
 
 (defvar helm-open-github--from-file-source
-  '((name . "Open Github From Commit")
+  '((name . "Open Github From File")
     (init . helm-open-github--collect-files)
     (candidates-in-buffer)
     (action . (("Open File" .
