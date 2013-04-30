@@ -4,7 +4,7 @@
 
 ;; Author: Syohei YOSHIDA <syohex@gmail.com>
 ;; URL: https://github.com/syohex/emacs-open-github
-;; Version: 0.01
+;; Version: 0.02
 ;; Package-Requires: ((helm "1.0") (gh "1.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -94,32 +94,53 @@
     (format "https://%s/%s/%s/commit/%s"
             host user repo commit-id)))
 
-(defun helm-open-github--from-commit-action-common (commit-id)
+(defun helm-open-github--from-commit-open-url-common (commit-id)
   (let* ((host (helm-open-github--host))
          (remote-url (helm-open-github--remote-url)))
     (browse-url
      (helm-open-github--commit-url host remote-url commit-id))))
 
-(defun helm-open-github--from-commit-action (line)
+(defun helm-open-github--from-commit-open-url (line)
   (let* ((commit-line (split-string line " "))
          (commit-id (helm-open-github--full-commit-id (car commit-line))))
-    (helm-open-github--from-commit-action-common commit-id)))
+    (helm-open-github--from-commit-open-url-common commit-id)))
 
-(defun helm-open-github--from-commit-direct-input-action (unused)
+(defun helm-open-github--from-commit-open-url-with-input (unused)
   (let ((commit-id (read-string "Input Commit ID: ")))
-    (helm-open-github--from-commit-action-common
+    (helm-open-github--from-commit-open-url-common
+     (helm-open-github--full-commit-id commit-id))))
+
+(defun helm-open-github--show-commit-id-common (commit-id)
+  (with-current-buffer (get-buffer-create "*open-github-issues*")
+    (let* ((cmd (format "git show --stat -p %s" commit-id))
+           (ret (call-process-shell-command cmd nil t)))
+      (unless (zerop ret)
+        (error "Error: %s" cmd))
+      (goto-char (point-min))
+      (pop-to-buffer (current-buffer)))))
+
+(defun helm-open-github--show-commit-id (line)
+  (let* ((commit-line (split-string line " "))
+         (commit-id (helm-open-github--full-commit-id (car commit-line))))
+    (helm-open-github--show-commit-id-common commit-id)))
+
+(defun helm-open-github--show-commit-id-with-input (unused)
+  (let ((commit-id (read-string "Input Commit ID: ")))
+    (helm-open-github--show-commit-id-common
      (helm-open-github--full-commit-id commit-id))))
 
 (defvar helm-open-github--from-commit-source
   '((name . "Open Github From Commit")
     (init . helm-open-github--collect-commit-id)
     (candidates-in-buffer)
-    (action . helm-open-github--from-commit-action)))
+    (action . (("Open Commit Page" . helm-open-github--from-commit-open-url)
+               ("Show Detail" . helm-open-github--show-commit-id)))))
 
 (defvar helm-open-github--from-commit-direct-input-source
   '((name . "Open Github From Commit Direct Input")
     (candidates . ("Input Commit ID"))
-    (action . helm-open-github--from-commit-direct-input-action)))
+    (action . (("Open Commit Page" . helm-open-github--from-commit-open-url-with-input)
+               ("Show Detail" . helm-open-github--show-commit-id-with-input)))))
 
 ;;;###autoload
 (defun helm-open-github-from-commit ()

@@ -1,4 +1,7 @@
 Revision history for helm-open-github.el
 
+Revision 0.01 2013/04/30 syohex
+   - Implement show commit detail
+
 Revision 0.01 2013/04/27 syohex
    - Initial release
