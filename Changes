@@ -1,6 +1,10 @@
 Revision history for helm-open-github.el
 
-Revision 0.01 2013/04/30 syohex
+Revision 0.03 2013/04/30 syohex
+   - Fix name attribute of helm-open-github--from-file-source
+     (Thanks shibayu36)
+
+Revision 0.02 2013/04/30 syohex
    - Implement show commit detail
 
 Revision 0.01 2013/04/27 syohex
