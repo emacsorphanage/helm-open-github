@@ -4,7 +4,7 @@
 
 ;; Author: Syohei YOSHIDA <syohex@gmail.com>
 ;; URL: https://github.com/syohex/emacs-open-github
-;; Version: 0.03
+;; Version: 0.04
 ;; Package-Requires: ((helm "1.0") (gh "1.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -100,9 +100,19 @@
     (browse-url
      (helm-open-github--commit-url host remote-url commit-id))))
 
+(defun helm-open-github--full-commit-id-from-candidate (line)
+  (let ((commit-line (split-string line " ")))
+    (helm-open-github--full-commit-id (car commit-line))))
+
+(defun helm-open-github--from-commit-id-persistent-action (line)
+  (let* ((commit-id (helm-open-github--full-commit-id-from-candidate line))
+         (str (shell-command-to-string
+               (format "git show --stat --oneline %s" commit-id))))
+    (with-help-window (help-buffer)
+      (princ str))))
+
 (defun helm-open-github--from-commit-open-url (line)
-  (let* ((commit-line (split-string line " "))
-         (commit-id (helm-open-github--full-commit-id (car commit-line))))
+  (let ((commit-id (helm-open-github--full-commit-id-from-candidate line)))
     (helm-open-github--from-commit-open-url-common commit-id)))
 
 (defun helm-open-github--from-commit-open-url-with-input (unused)
@@ -133,6 +143,7 @@
   '((name . "Open Github From Commit")
     (init . helm-open-github--collect-commit-id)
     (candidates-in-buffer)
+    (persistent-action . helm-open-github--from-commit-id-persistent-action)
     (action . (("Open Commit Page" . helm-open-github--from-commit-open-url)
                ("Show Detail" . helm-open-github--show-commit-id)))))
 

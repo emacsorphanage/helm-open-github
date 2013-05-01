@@ -1,5 +1,8 @@
 Revision history for helm-open-github.el
 
+Revision 0.04 2013/05/01 syohex
+   - Implement persistent action to helm-open-github-from-commit
+
 Revision 0.03 2013/04/30 syohex
    - Fix name attribute of helm-open-github--from-file-source
      (Thanks shibayu36)
