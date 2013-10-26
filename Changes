@@ -1,5 +1,9 @@
 Revision history for helm-open-github.el
 
+Revision 0.05 2013/10/26 syohex
+   - Fix repository regexp
+   - Support multiple candidates
+
 Revision 0.04 2013/05/01 syohex
    - Implement persistent action to helm-open-github-from-commit
 
