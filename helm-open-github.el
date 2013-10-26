@@ -111,9 +111,10 @@
     (with-help-window (help-buffer)
       (princ str))))
 
-(defun helm-open-github--from-commit-open-url (line)
-  (let ((commit-id (helm-open-github--full-commit-id-from-candidate line)))
-    (helm-open-github--from-commit-open-url-common commit-id)))
+(defun helm-open-github--from-commit-open-url (candidate)
+  (dolist (commit-line (helm-marked-candidates))
+    (let ((commit-id (helm-open-github--full-commit-id-from-candidate commit-line)))
+      (helm-open-github--from-commit-open-url-common commit-id))))
 
 (defun helm-open-github--from-commit-open-url-with-input (unused)
   (let ((commit-id (read-string "Input Commit ID: ")))
@@ -210,7 +211,9 @@
     (init . helm-open-github--collect-files)
     (candidates-in-buffer)
     (action . (("Open File" .
-                (lambda (file) (helm-open-github--from-file-action file)))
+                (lambda (cand)
+                  (dolist (file (helm-marked-candidates))
+                    (helm-open-github--from-file-action file))))
                ("Open File and Highlight Line"
                 . helm-open-github--from-file-highlight-line-action)
                ("Open File and Highlight Region"
@@ -255,9 +258,10 @@
     (candidates . helm-open-github--collect-issues)
     (volatile)
     (real-to-display . helm-open-github--from-issues-real-to-display)
-    (action . (lambda (issue)
-                (browse-url
-                 (helm-open-github--convert-issue-api-url (oref issue url)))))))
+    (action . (lambda (cand)
+                (dolist (issue (helm-marked-candidates))
+                  (browse-url
+                   (helm-open-github--convert-issue-api-url (oref issue url))))))))
 
 (defun helm-open-github--construct-issue-url (host remote-url issue-id)
   (multiple-value-bind (user repo) (helm-open-github--extract-user-host remote-url)
