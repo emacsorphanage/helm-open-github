@@ -48,6 +48,11 @@
   "Github API instance. This is-a `gh-issues'"
   :group 'helm-open-github)
 
+(defcustom helm-open-github-pulls-api
+  (gh-pulls-api "api" :sync t :cache nil :num-retries 1)
+  "Github API instance. This is-a `gh-pulls'"
+  :group 'helm-open-github)
+
 (defun helm-open-github--collect-commit-id ()
   (let ((cmd (format "git --no-pager log -n %d --pretty=oneline --abbrev-commit"
                      helm-open-github-commit-limit)))
@@ -253,15 +258,17 @@
   (with-slots (number title state) issue
     (format "#%-4d [%s] %s" number state title)))
 
+(defun helm-open-github--open-issue-url (candidate)
+  (dolist (issue (helm-marked-candidates))
+    (browse-url (oref issue html-url)
+                (helm-open-github--convert-issue-api-url (oref issue url)))))
+
 (defvar helm-open-github--from-issues-source
   '((name . "Open Github From Issues")
     (candidates . helm-open-github--collect-issues)
     (volatile)
     (real-to-display . helm-open-github--from-issues-real-to-display)
-    (action . (lambda (cand)
-                (dolist (issue (helm-marked-candidates))
-                  (browse-url
-                   (helm-open-github--convert-issue-api-url (oref issue url))))))))
+    (action . (("Open issue page with browser" . helm-open-github--open-issue-url)))))
 
 (defun helm-open-github--construct-issue-url (host remote-url issue-id)
   (multiple-value-bind (user repo) (helm-open-github--extract-user-host remote-url)
@@ -281,6 +288,52 @@
     (if (not (string= host "github.com"))
         (helm-open-github--from-issues-direct host)
       (helm :sources '(helm-open-github--from-issues-source)
+            :buffer  "*open github*"))))
+
+(defun helm-open-github--collect-pullreqs ()
+  (let ((host (helm-open-github--host))
+        (remote-url (helm-open-github--remote-url)))
+    (multiple-value-bind (user repo) (helm-open-github--extract-user-host remote-url)
+      (let ((issues (gh-pulls-list helm-open-github-pulls-api user repo)))
+        (if (null issues)
+            (error "This repository has no issues!!")
+          (sort (oref issues data)
+                (lambda (a b) (< (oref a number) (oref b number)))))))))
+
+(defun helm-open-github--pulls-view-common (url)
+  (require 'diff-mode)
+  (with-current-buffer (get-buffer-create "*open-github-diff*")
+    (view-mode -1)
+    (erase-buffer)
+    (unless (zerop (call-process-shell-command (concat "curl -s " url) nil t))
+      (error "Can't download %s" url))
+    (goto-char (point-min))
+    (diff-mode)
+    (view-mode)
+    (pop-to-buffer (current-buffer))))
+
+(defun helm-open-github--pulls-view-diff (candidate)
+  (helm-open-github--pulls-view-common (oref candidate diff-url)))
+
+(defun helm-open-github--pulls-view-patch (candidate)
+  (helm-open-github--pulls-view-common (oref candidate patch-url)))
+
+(defvar helm-open-github--from-pulls-source
+  '((name . "Open Github From Issues")
+    (candidates . helm-open-github--collect-pullreqs)
+    (volatile)
+    (real-to-display . helm-open-github--from-issues-real-to-display)
+    (action . (("Open issue page with browser" . helm-open-github--open-issue-url)
+               ("View Diff" . helm-open-github--pulls-view-diff)
+               ("View Patch" . helm-open-github--pulls-view-patch)))))
+
+;;;###autoload
+(defun helm-open-github-from-pull-requests ()
+  (interactive)
+  (let ((host (helm-open-github--host)))
+    (if (not (string= host "github.com"))
+        (helm-open-github--from-issues-direct host)
+      (helm :sources '(helm-open-github--from-pulls-source)
             :buffer  "*open github*"))))
 
 (provide 'helm-open-github)

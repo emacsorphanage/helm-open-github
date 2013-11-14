@@ -30,6 +30,10 @@ Open file page from *file name*
 
 Open issue page from *issue ID*
 
+### `helm-open-github-from-pull-requests`
+
+Open pull request page from *pull request ID*
+
 
 ## Customize
 
@@ -45,4 +49,5 @@ Issue number shown by `helm-open-github-from-commit`.(Default is 100)
 (global-set-key (kbd "C-c o f") 'helm-open-github-from-file)
 (global-set-key (kbd "C-c o c") 'helm-open-github-from-commit)
 (global-set-key (kbd "C-c o i") 'helm-open-github-from-issues)
+(global-set-key (kbd "C-c p p") 'helm-open-github-from-pull-requests)
 ```
