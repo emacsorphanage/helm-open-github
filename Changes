@@ -1,5 +1,8 @@
 Revision history for helm-open-github.el
 
+Revision 0.06 2013/11/14 syohex
+   - Implement pull request interface
+
 Revision 0.05 2013/10/26 syohex
    - Fix repository regexp
    - Support multiple candidates
