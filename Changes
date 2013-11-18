@@ -1,5 +1,8 @@
 Revision history for helm-open-github.el
 
+Revision 0.07 2013/11/14 syohex
+   - Fix missing requirements(Thanks tdksk)
+
 Revision 0.06 2013/11/14 syohex
    - Implement pull request interface
 
