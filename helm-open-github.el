@@ -32,6 +32,7 @@
 
 (require 'helm)
 (require 'gh-issues)
+(require 'gh-pulls)
 
 (defgroup helm-open-github nil
   "Utilities of opeg "
