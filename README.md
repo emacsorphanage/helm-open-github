@@ -1,5 +1,5 @@
 # helm-open-github.el
-*helm-open-github.el* is utilities for opening github url.
+helm-open-github.el is utilities for opening github url.
 This is inspired by URL below.
 
 * http://shibayu36.hatenablog.com/entry/2013/01/18/211428
