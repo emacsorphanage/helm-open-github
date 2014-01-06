@@ -4,9 +4,19 @@ This is inspired by URL below.
 
 * http://shibayu36.hatenablog.com/entry/2013/01/18/211428
 
-## screenshot
+
+## Screenshot
 
 ![open-github-from-commit](image/helm-open-github-from-commit.png)
+
+
+## Installation
+
+You can install `helm-open-github` from [MELPA](http://melpa.milkbox.net/) with package.el.
+
+```
+ M-x package-install helm-open-github
+```
 
 
 ## Dependency
@@ -49,5 +59,5 @@ Issue number shown by `helm-open-github-from-commit`.(Default is 100)
 (global-set-key (kbd "C-c o f") 'helm-open-github-from-file)
 (global-set-key (kbd "C-c o c") 'helm-open-github-from-commit)
 (global-set-key (kbd "C-c o i") 'helm-open-github-from-issues)
-(global-set-key (kbd "C-c p p") 'helm-open-github-from-pull-requests)
+(global-set-key (kbd "C-c o p") 'helm-open-github-from-pull-requests)
 ```
