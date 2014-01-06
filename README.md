@@ -20,19 +20,19 @@ This is inspired by URL below.
 
 ### `helm-open-github-from-commit`
 
-Open commit page from *commit id*
+Open commit page from **Commit ID**
 
 ### `helm-open-github-from-file`
 
-Open file page from *file name*
+Open file page from **File Name**
 
 ### `helm-open-github-from-issues`
 
-Open issue page from *issue ID*
+Open issue page from **Issue ID**
 
 ### `helm-open-github-from-pull-requests`
 
-Open pull request page from *pull request ID*
+Open pull request page from **Pull Request ID**
 
 
 ## Customize
