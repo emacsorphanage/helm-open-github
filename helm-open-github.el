@@ -3,7 +3,7 @@
 ;; Copyright (C) 2013 by Syohei YOSHIDA
 
 ;; Author: Syohei YOSHIDA <syohex@gmail.com>
-;; URL: https://github.com/syohex/emacs-open-github
+;; URL: https://github.com/syohex/emacs-helm-open-github
 ;; Version: 0.07
 ;; Package-Requires: ((helm "1.0") (gh "1.0"))
 
