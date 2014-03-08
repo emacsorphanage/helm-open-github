@@ -1,4 +1,4 @@
-;;; helm-open-github.el --- Utilities of Opening Github Page
+;;; helm-open-github.el --- Utilities of Opening Github Page -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2013 by Syohei YOSHIDA
 
@@ -116,12 +116,12 @@
     (with-help-window (help-buffer)
       (princ str))))
 
-(defun helm-open-github--from-commit-open-url (candidate)
+(defun helm-open-github--from-commit-open-url (_candidate)
   (dolist (commit-line (helm-marked-candidates))
     (let ((commit-id (helm-open-github--full-commit-id-from-candidate commit-line)))
       (helm-open-github--from-commit-open-url-common commit-id))))
 
-(defun helm-open-github--from-commit-open-url-with-input (unused)
+(defun helm-open-github--from-commit-open-url-with-input (_candidate)
   (let ((commit-id (read-string "Input Commit ID: ")))
     (helm-open-github--from-commit-open-url-common
      (helm-open-github--full-commit-id commit-id))))
@@ -140,7 +140,7 @@
          (commit-id (helm-open-github--full-commit-id (car commit-line))))
     (helm-open-github--show-commit-id-common commit-id)))
 
-(defun helm-open-github--show-commit-id-with-input (unused)
+(defun helm-open-github--show-commit-id-with-input (_candidate)
   (let ((commit-id (read-string "Input Commit ID: ")))
     (helm-open-github--show-commit-id-common
      (helm-open-github--full-commit-id commit-id))))
@@ -240,8 +240,7 @@
           :buffer "*open github*")))
 
 (defun helm-open-github--collect-issues ()
-  (let ((host (helm-open-github--host))
-        (remote-url (helm-open-github--remote-url)))
+  (let ((remote-url (helm-open-github--remote-url)))
     (cl-multiple-value-bind (user repo) (helm-open-github--extract-user-host remote-url)
       (let ((issues (gh-issues-issue-list helm-open-github-issues-api user repo)))
         (if (null issues)
@@ -258,7 +257,7 @@
   (with-slots (number title state) issue
     (format "#%-4d [%s] %s" number state title)))
 
-(defun helm-open-github--open-issue-url (candidate)
+(defun helm-open-github--open-issue-url (_candidate)
   (dolist (issue (helm-marked-candidates))
     (browse-url (oref issue html-url)
                 (helm-open-github--convert-issue-api-url (oref issue url)))))
@@ -291,8 +290,7 @@
             :buffer  "*open github*"))))
 
 (defun helm-open-github--collect-pullreqs ()
-  (let ((host (helm-open-github--host))
-        (remote-url (helm-open-github--remote-url)))
+  (let ((remote-url (helm-open-github--remote-url)))
     (cl-multiple-value-bind (user repo) (helm-open-github--extract-user-host remote-url)
       (let ((issues (gh-pulls-list helm-open-github-pulls-api user repo)))
         (if (null issues)
