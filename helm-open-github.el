@@ -5,7 +5,7 @@
 ;; Author: Syohei YOSHIDA <syohex@gmail.com>
 ;; URL: https://github.com/syohex/emacs-helm-open-github
 ;; Version: 0.07
-;; Package-Requires: ((helm "1.0") (gh "1.0"))
+;; Package-Requires: ((helm "1.0") (gh "1.0") (cl-lib "0.5"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -27,8 +27,7 @@
 
 ;;; Code:
 
-(eval-when-compile
-  (require 'cl))
+(require 'cl-lib)
 
 (require 'helm)
 (require 'gh-issues)
@@ -96,7 +95,7 @@
     (error "Failed: match %s" remote-url)))
 
 (defun helm-open-github--commit-url (host remote-url commit-id)
-  (multiple-value-bind (user repo) (helm-open-github--extract-user-host remote-url)
+  (cl-multiple-value-bind (user repo) (helm-open-github--extract-user-host remote-url)
     (format "https://%s/%s/%s/commit/%s"
             host user repo commit-id)))
 
@@ -184,7 +183,7 @@
       (replace-regexp-in-string "\\`refs/heads/" "" branch))))
 
 (defun helm-open-github--file-url (host remote-url branch file marker)
-  (multiple-value-bind (user repo) (helm-open-github--extract-user-host remote-url)
+  (cl-multiple-value-bind (user repo) (helm-open-github--extract-user-host remote-url)
     (format "https://%s/%s/%s/blob/%s/%s%s"
             host user repo branch file marker)))
 
@@ -243,7 +242,7 @@
 (defun helm-open-github--collect-issues ()
   (let ((host (helm-open-github--host))
         (remote-url (helm-open-github--remote-url)))
-    (multiple-value-bind (user repo) (helm-open-github--extract-user-host remote-url)
+    (cl-multiple-value-bind (user repo) (helm-open-github--extract-user-host remote-url)
       (let ((issues (gh-issues-issue-list helm-open-github-issues-api user repo)))
         (if (null issues)
             (error "This repository has no issues!!")
@@ -272,7 +271,7 @@
     (action . (("Open issue page with browser" . helm-open-github--open-issue-url)))))
 
 (defun helm-open-github--construct-issue-url (host remote-url issue-id)
-  (multiple-value-bind (user repo) (helm-open-github--extract-user-host remote-url)
+  (cl-multiple-value-bind (user repo) (helm-open-github--extract-user-host remote-url)
     (format "https://%s/%s/%s/issues/%s"
             host user repo issue-id)))
 
@@ -294,7 +293,7 @@
 (defun helm-open-github--collect-pullreqs ()
   (let ((host (helm-open-github--host))
         (remote-url (helm-open-github--remote-url)))
-    (multiple-value-bind (user repo) (helm-open-github--extract-user-host remote-url)
+    (cl-multiple-value-bind (user repo) (helm-open-github--extract-user-host remote-url)
       (let ((issues (gh-pulls-list helm-open-github-pulls-api user repo)))
         (if (null issues)
             (error "This repository has no issues!!")
