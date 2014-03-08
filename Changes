@@ -1,5 +1,9 @@
 Revision history for helm-open-github.el
 
+Revision 0.07 2014/03/08 syohex
+   - Enable lexical binding
+   - switch cl-lib
+
 Revision 0.07 2013/11/14 syohex
    - Fix missing requirements(Thanks tdksk)
 

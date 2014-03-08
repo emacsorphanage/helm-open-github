@@ -1,10 +1,10 @@
 ;;; helm-open-github.el --- Utilities of Opening Github Page -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2013 by Syohei YOSHIDA
+;; Copyright (C) 2014 by Syohei YOSHIDA
 
 ;; Author: Syohei YOSHIDA <syohex@gmail.com>
 ;; URL: https://github.com/syohex/emacs-helm-open-github
-;; Version: 0.07
+;; Version: 0.08
 ;; Package-Requires: ((helm "1.0") (gh "1.0") (cl-lib "0.5"))
 
 ;; This program is free software; you can redistribute it and/or modify
