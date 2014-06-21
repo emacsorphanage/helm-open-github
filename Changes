@@ -1,6 +1,10 @@
 Revision history for helm-open-github.el
 
-Revision 0.07 2014/03/08 syohex
+Revision 0.09 2014/06/21 syohex
+   - Fix for cl-lib
+   - Use Cask now
+
+Revision 0.08 2014/03/08 syohex
    - Enable lexical binding
    - switch cl-lib
 
