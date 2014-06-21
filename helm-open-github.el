@@ -91,7 +91,7 @@
 
 (defun helm-open-github--extract-user-host (remote-url)
   (if (string-match "[:/]\\([^/]+\\)/\\([^/]+?\\)\\(?:\\.git\\)?\\'" remote-url)
-      (values (match-string 1 remote-url) (match-string 2 remote-url))
+      (cl-values (match-string 1 remote-url) (match-string 2 remote-url))
     (error "Failed: match %s" remote-url)))
 
 (defun helm-open-github--commit-url (host remote-url commit-id)
