@@ -1,5 +1,8 @@
 Revision history for helm-open-github.el
 
+Revision 0.11 2014/07/02 syohex
+   - Re-factoring
+
 Revision 0.10 2014/07/02 syohex
    - Re-factoring
 
