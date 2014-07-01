@@ -1,5 +1,8 @@
 Revision history for helm-open-github.el
 
+Revision 0.10 2014/07/02 syohex
+   - Re-factoring
+
 Revision 0.09 2014/06/21 syohex
    - Fix for cl-lib
    - Use Cask now
