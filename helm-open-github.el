@@ -54,40 +54,38 @@
   :group 'helm-open-github)
 
 (defun helm-open-github--collect-commit-id ()
-  (let ((cmd (format "git --no-pager log -n %d --pretty=oneline --abbrev-commit"
-                     helm-open-github-commit-limit)))
-    (with-current-buffer (helm-candidate-buffer 'global)
-      (let ((ret (call-process-shell-command cmd nil t)))
-        (unless (zerop ret)
-          (error "Failed: git log(retval=%d)" ret))))))
+  (with-current-buffer (helm-candidate-buffer 'global)
+    (let ((ret (call-process "git" nil t nil
+                             "--no-pager" "log"
+                             "-n" (number-to-string helm-open-github-commit-limit)
+                             "--pretty=oneline" "--abbrev-commit")))
+      (unless (zerop ret)
+        (error "Failed: get commit ID")))))
 
-(defun helm-open-github--command-one-line (cmd)
+(defun helm-open-github--command-one-line (cmd args)
   (with-temp-buffer
-    (let ((ret (call-process-shell-command cmd nil t)))
-      (when (zerop ret)
-        (goto-char (point-min))
-        (buffer-substring-no-properties
-         (line-beginning-position) (line-end-position))))))
+    (when (zerop (apply 'call-process cmd nil t nil args))
+      (goto-char (point-min))
+      (buffer-substring-no-properties
+       (line-beginning-position) (line-end-position)))))
 
 (defun helm-open-github--full-commit-id (abbrev-id)
-  (let ((cmd (concat "git rev-parse " abbrev-id)))
-    (or (helm-open-github--command-one-line cmd)
-        (error "Failed: %s" cmd))))
+  (or (helm-open-github--command-one-line "git" `("rev-parse" ,abbrev-id))
+      (error "Failed: 'git rev-parse %s'" abbrev-id)))
 
 (defun helm-open-github--root-directory ()
-  (let ((root (helm-open-github--command-one-line "git rev-parse --show-toplevel")))
+  (let ((root (helm-open-github--command-one-line "git" '("rev-parse" "--show-toplevel"))))
     (if (not root)
         (error "Error: here is not Git repository")
       (file-name-as-directory root))))
 
 (defun helm-open-github--host ()
-  (or (helm-open-github--command-one-line "git config --get hub.host")
+  (or (helm-open-github--command-one-line "git" '("config" "--get" "hub.host"))
       "github.com"))
 
 (defun helm-open-github--remote-url ()
-  (let ((cmd "git config --get remote.origin.url"))
-    (or (helm-open-github--command-one-line cmd)
-        (error "Failed: %s" cmd))))
+  (or (helm-open-github--command-one-line "git" '("config" "--get" "remote.origin.url"))
+      (error "Failed: Can't get remote.origin URL")))
 
 (defun helm-open-github--extract-user-host (remote-url)
   (if (string-match "[:/]\\([^/]+\\)/\\([^/]+?\\)\\(?:\\.git\\)?\\'" remote-url)
@@ -176,10 +174,9 @@
           (error "Failed: %s(%s)" cmd default-directory))))))
 
 (defun helm-open-github--branch ()
-  (let* ((cmd "git symbolic-ref HEAD")
-         (branch (helm-open-github--command-one-line cmd)))
+  (let ((branch (helm-open-github--command-one-line "git" '("symbolic-ref" "HEAD"))))
     (if (not branch)
-        (error "Failed: %s" cmd)
+        (error "Failed: 'git symbolic-ref HEAD'")
       (replace-regexp-in-string "\\`refs/heads/" "" branch))))
 
 (defun helm-open-github--file-url (host remote-url branch file marker)
