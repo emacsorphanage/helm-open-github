@@ -12,7 +12,7 @@ This is inspired by URL below.
 
 ## Installation
 
-You can install `helm-open-github` from [MELPA](http://melpa.milkbox.net/) with package.el.
+You can install `helm-open-github` from [MELPA](http://melpa.org/) with package.el.
 
 ```
  M-x package-install helm-open-github
