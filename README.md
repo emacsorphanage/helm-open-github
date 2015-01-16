@@ -2,7 +2,7 @@
 helm-open-github.el is utilities for opening github url.
 This is inspired by URL below.
 
-* http://shibayu36.hatenablog.com/entry/2013/01/18/211428
+- http://shibayu36.hatenablog.com/entry/2013/01/18/211428
 
 
 ## Screenshot
@@ -54,8 +54,7 @@ Issue number shown by `helm-open-github-from-commit`.(Default is 100)
 
 ## Sample Configuration
 
-```elisp
-(require 'helm-open-github)
+```lisp
 (global-set-key (kbd "C-c o f") 'helm-open-github-from-file)
 (global-set-key (kbd "C-c o c") 'helm-open-github-from-commit)
 (global-set-key (kbd "C-c o i") 'helm-open-github-from-issues)
