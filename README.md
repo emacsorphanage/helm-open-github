@@ -21,7 +21,7 @@ You can install `helm-open-github` from [MELPA](http://melpa.org/) with package.
 
 ## Dependency
 
-* Emacs 23.4 or higher
+* Emacs 24.3 or higher
 * [helm](https://github.com/emacs-helm/helm)
 * [gh](https://github.com/sigma/gh.el)
 
