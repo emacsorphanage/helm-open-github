@@ -1,4 +1,4 @@
-# helm-open-github.el
+# helm-open-github.el [![melpa badge][melpa-badge]][melpa-link] [![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
 helm-open-github.el is utilities for opening github url.
 This is inspired by URL below.
 
@@ -61,3 +61,8 @@ Issue number shown by `helm-open-github-from-commit`.(Default is 100)
 (global-set-key (kbd "C-c o i") 'helm-open-github-from-issues)
 (global-set-key (kbd "C-c o p") 'helm-open-github-from-pull-requests)
 ```
+
+[melpa-link]: http://melpa.org/#/helm-open-github
+[melpa-stable-link]: http://melpa.org/#/helm-open-github
+[melpa-badge]: http://melpa.org/packages/helm-open-github-badge.svg
+[melpa-stable-badge]: http://stable.melpa.org/packages/helm-open-github-badge.svg
