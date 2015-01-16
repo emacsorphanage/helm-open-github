@@ -241,16 +241,16 @@
           (sort (oref issues data)
                 (lambda (a b) (< (oref a number) (oref b number)))))))))
 
-(defmethod gh-issues-issue-list-all ((api gh-issues-api) user repo)
+(defmethod gh-issues-issue-list-closed ((api gh-issues-api) user repo)
   (gh-api-authenticated-request
    api (gh-object-list-reader (oref api issue-cls)) "GET"
    (format "/repos/%s/%s/issues" user repo)
-   nil '(("state" . "all"))))
+   nil '(("state" . "closed"))))
 
-(defun helm-open-github--collect-all-issues ()
+(defun helm-open-github--collect-closed-issues ()
   (let ((remote-url (helm-open-github--remote-url)))
     (cl-multiple-value-bind (user repo) (helm-open-github--extract-user-host remote-url)
-      (let ((issues (gh-issues-issue-list-all helm-open-github-issues-api user repo)))
+      (let ((issues (gh-issues-issue-list-closed helm-open-github-issues-api user repo)))
         (if (null issues)
             (error "This repository has no issues!!")
           (sort (oref issues data)
@@ -261,43 +261,46 @@
    "api\\." ""
    (replace-regexp-in-string "/repos" "" url)))
 
-(defun helm-open-github--from-issues-real-to-display (issue)
+(defun helm-open-github--from-issues-format-candidate (issue)
   (with-slots (number title state) issue
-    (format "#%-4d [%s] %s" number state title)))
+    (propertize (format "#%-4d [%s] %s" number state title)
+                'helm-realvalue issue)))
 
 (defun helm-open-github--open-issue-url (_candidate)
   (dolist (issue (helm-marked-candidates))
     (browse-url (oref issue html-url)
                 (helm-open-github--convert-issue-api-url (oref issue url)))))
 
-(defvar helm-open-github-issues-cache (make-hash-table :test 'equal))
+(defvar helm-open-github--issues-cache (make-hash-table :test 'equal))
 (defvar helm-open-github--from-issues-source
   (helm-build-in-buffer-source "Open Github From Open Issues"
     :init (lambda ()
             (let* ((key (helm-open-github--remote-url))
-                   (issues (gethash key helm-open-github-issues-cache)))
+                   (issues (gethash key helm-open-github--issues-cache)))
               (unless issues
                 (setq issues
                       (puthash key (helm-open-github--collect-issues)
-                               helm-open-github-issues-cache)))
+                               helm-open-github--issues-cache)))
               (helm-init-candidates-in-buffer 'global
                 (cl-loop for c in issues
-                         collect (helm-open-github--from-issues-real-to-display c)))))
+                         collect (helm-open-github--from-issues-format-candidate c)))))
+    :get-line 'buffer-substring
     :action '(("Open issue page with browser" . helm-open-github--open-issue-url))))
 
-(defvar helm-open-github-all-issues-cache (make-hash-table :test 'equal))
-(defvar helm-open-github--from-all-issues-source
+(defvar helm-open-github--closed-issues-cache (make-hash-table :test 'equal))
+(defvar helm-open-github--from-closed-issues-source
   (helm-build-in-buffer-source "Open Github From all Issues"
     :init (lambda ()
             (let* ((key (helm-open-github--remote-url))
-                   (issues (gethash key helm-open-github-all-issues-cache)))
+                   (issues (gethash key helm-open-github--closed-issues-cache)))
               (unless issues
                 (setq issues
-                      (puthash key (helm-open-github--collect-all-issues)
-                               helm-open-github-all-issues-cache)))
+                      (puthash key (helm-open-github--collect-closed-issues)
+                               helm-open-github--closed-issues-cache)))
               (helm-init-candidates-in-buffer 'global
                 (cl-loop for c in issues
-                       collect (helm-open-github--from-issues-real-to-display c)))))
+                         collect (helm-open-github--from-issues-format-candidate c)))))
+    :get-line 'buffer-substring
     :action '(("Open issue page with browser" . helm-open-github--open-issue-url))))
 
 (defun helm-open-github--construct-issue-url (host remote-url issue-id)
@@ -317,12 +320,12 @@
   (let ((host (helm-open-github--host))
         (url (helm-open-github--remote-url)))
     (when arg
-      (remhash url helm-open-github-all-issues-cache)
-      (remhash url helm-open-github-issues-cache))
+      (remhash url helm-open-github--closed-issues-cache)
+      (remhash url helm-open-github--issues-cache))
     (if (not (string= host "github.com"))
         (helm-open-github--from-issues-direct host)
       (helm :sources '(helm-open-github--from-issues-source
-                       helm-open-github--from-all-issues-source)
+                       helm-open-github--from-closed-issues-source)
             :buffer  "*open github*"))))
 
 (defun helm-open-github--collect-pullreqs ()
@@ -355,7 +358,7 @@
   '((name . "Open Github From Issues")
     (candidates . helm-open-github--collect-pullreqs)
     (volatile)
-    (real-to-display . helm-open-github--from-issues-real-to-display)
+    (real-to-display . helm-open-github--from-issues-format-candidate)
     (action . (("Open issue page with browser" . helm-open-github--open-issue-url)
                ("View Diff" . helm-open-github--pulls-view-diff)
                ("View Patch" . helm-open-github--pulls-view-patch)))))
