@@ -289,7 +289,7 @@
 
 (defvar helm-open-github--closed-issues-cache (make-hash-table :test 'equal))
 (defvar helm-open-github--from-closed-issues-source
-  (helm-build-in-buffer-source "Open Github From all Issues"
+  (helm-build-in-buffer-source "Open Github From closed Issues"
     :init (lambda ()
             (let* ((key (helm-open-github--remote-url))
                    (issues (gethash key helm-open-github--closed-issues-cache)))
