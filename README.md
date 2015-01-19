@@ -1,8 +1,8 @@
-# helm-open-github.el
+# helm-open-github.el [![melpa badge][melpa-badge]][melpa-link] [![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
 helm-open-github.el is utilities for opening github url.
 This is inspired by URL below.
 
-* http://shibayu36.hatenablog.com/entry/2013/01/18/211428
+- http://shibayu36.hatenablog.com/entry/2013/01/18/211428
 
 
 ## Screenshot
@@ -12,7 +12,7 @@ This is inspired by URL below.
 
 ## Installation
 
-You can install `helm-open-github` from [MELPA](http://melpa.milkbox.net/) with package.el.
+You can install `helm-open-github` from [MELPA](http://melpa.org/) with package.el.
 
 ```
  M-x package-install helm-open-github
@@ -21,7 +21,7 @@ You can install `helm-open-github` from [MELPA](http://melpa.milkbox.net/) with 
 
 ## Dependency
 
-* Emacs 23.4 or higher
+* Emacs 24.3 or higher
 * [helm](https://github.com/emacs-helm/helm)
 * [gh](https://github.com/sigma/gh.el)
 
@@ -54,10 +54,14 @@ Issue number shown by `helm-open-github-from-commit`.(Default is 100)
 
 ## Sample Configuration
 
-```elisp
-(require 'helm-open-github)
+```lisp
 (global-set-key (kbd "C-c o f") 'helm-open-github-from-file)
 (global-set-key (kbd "C-c o c") 'helm-open-github-from-commit)
 (global-set-key (kbd "C-c o i") 'helm-open-github-from-issues)
 (global-set-key (kbd "C-c o p") 'helm-open-github-from-pull-requests)
 ```
+
+[melpa-link]: http://melpa.org/#/helm-open-github
+[melpa-stable-link]: http://melpa.org/#/helm-open-github
+[melpa-badge]: http://melpa.org/packages/helm-open-github-badge.svg
+[melpa-stable-badge]: http://stable.melpa.org/packages/helm-open-github-badge.svg

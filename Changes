@@ -1,5 +1,9 @@
 Revision history for helm-open-github.el
 
+Revision 0.12 2015/01/17 syohex
+   - Improve issue command(Thanks thierryvolpiatto)
+     We can see all issues now.
+
 Revision 0.11 2014/07/02 syohex
    - Re-factoring
 
