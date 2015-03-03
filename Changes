@@ -1,5 +1,8 @@
 Revision history for helm-open-github.el
 
+Revision 0.13 2015/03/03 syohex
+   - Fix wrong 'gh' version #9(Reported by nlamirault)
+
 Revision 0.12 2015/01/17 syohex
    - Improve issue command(Thanks thierryvolpiatto)
      We can see all issues now.
