@@ -62,6 +62,6 @@ Issue number shown by `helm-open-github-from-commit`.(Default is 100)
 ```
 
 [melpa-link]: http://melpa.org/#/helm-open-github
-[melpa-stable-link]: http://melpa.org/#/helm-open-github
+[melpa-stable-link]: http://stable.melpa.org/#/helm-open-github
 [melpa-badge]: http://melpa.org/packages/helm-open-github-badge.svg
 [melpa-stable-badge]: http://stable.melpa.org/packages/helm-open-github-badge.svg
