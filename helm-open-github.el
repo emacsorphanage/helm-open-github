@@ -53,6 +53,19 @@
   "Github API instance. This is-a `gh-pulls'"
   :group 'helm-open-github)
 
+(defcustom helm-open-github-closed-issue-since 19
+  "Only issues updated this number of days ago are returned."
+  :type 'integer
+  :group 'helm-open-github)
+
+(defcustom helm-open-github-closed-issue-sort-direction "asc"
+  "Direction of the sort for closed issues.
+Either \"asc\" or \"desc\"."
+  :type '(radio :tag "Preferred direction of the sort"
+          (const :tag "Ascendent" "asc")
+          (const :tag "Descendent" "desc"))
+  :group 'helm-open-github)
+
 (defun helm-open-github--collect-commit-id ()
   (with-current-buffer (helm-candidate-buffer 'global)
     (let ((ret (call-process "git" nil t nil
@@ -239,13 +252,21 @@
         (if (null issues)
             (error "This repository has no issues!!")
           (sort (oref issues data)
-                (lambda (a b) (< (oref a number) (oref b number)))))))))
+                (lambda (a b) (> (oref a number) (oref b number)))))))))
 
 (defmethod gh-issues-issue-list-closed ((api gh-issues-api) user repo)
   (gh-api-authenticated-request
    api (gh-object-list-reader (oref api issue-cls)) "GET"
    (format "/repos/%s/%s/issues" user repo)
-   nil '(("state" . "closed"))))
+   nil `(("state" . "closed")
+         ("since" . ,(format-time-string
+                      "%y-%m-%dT%H:%M:%SZ"
+                      (time-subtract
+                       (current-time)
+                       (seconds-to-time
+                        (* (* (* helm-open-github-closed-issue-since 24)
+                              60) 60)))))
+         ("direction" . ,helm-open-github-closed-issue-sort-direction))))
 
 (defun helm-open-github--collect-closed-issues ()
   (let ((remote-url (helm-open-github--remote-url)))
@@ -253,8 +274,7 @@
       (let ((issues (gh-issues-issue-list-closed helm-open-github-issues-api user repo)))
         (if (null issues)
             (error "This repository has no issues!!")
-          (sort (oref issues data)
-                (lambda (a b) (< (oref a number) (oref b number)))))))))
+            (oref issues data))))))
 
 (defun helm-open-github--convert-issue-api-url (url)
   (replace-regexp-in-string
