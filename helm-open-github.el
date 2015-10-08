@@ -379,9 +379,9 @@ Either \"asc\" or \"desc\"."
     :candidates 'helm-open-github--collect-pullreqs
     :volatile t
     :real-to-display 'helm-open-github--from-issues-format-candidate
-    :action'(("Open issue page with browser" . helm-open-github--open-issue-url)
-             ("View Diff" . helm-open-github--pulls-view-diff)
-             ("View Patch" . helm-open-github--pulls-view-patch))))
+    :action '(("Open issue page with browser" . helm-open-github--open-issue-url)
+              ("View Diff" . helm-open-github--pulls-view-diff)
+              ("View Patch" . helm-open-github--pulls-view-patch))))
 
 ;;;###autoload
 (defun helm-open-github-from-pull-requests ()
