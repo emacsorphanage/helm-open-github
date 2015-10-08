@@ -5,7 +5,7 @@
 ;; Author: Syohei YOSHIDA <syohex@gmail.com>
 ;; URL: https://github.com/syohex/emacs-helm-open-github
 ;; Version: 0.13
-;; Package-Requires: ((helm "1.0") (gh "0.8.2") (cl-lib "0.5"))
+;; Package-Requires: ((helm-core "1.7.7") (gh "0.8.2") (cl-lib "0.5"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -375,13 +375,13 @@ Either \"asc\" or \"desc\"."
   (helm-open-github--pulls-view-common (oref candidate patch-url)))
 
 (defvar helm-open-github--from-pulls-source
-  '((name . "Open Github From Issues")
-    (candidates . helm-open-github--collect-pullreqs)
-    (volatile)
-    (real-to-display . helm-open-github--from-issues-format-candidate)
-    (action . (("Open issue page with browser" . helm-open-github--open-issue-url)
-               ("View Diff" . helm-open-github--pulls-view-diff)
-               ("View Patch" . helm-open-github--pulls-view-patch)))))
+  (helm-build-sync-source "Open Github From Issues"
+    :candidates 'helm-open-github--collect-pullreqs
+    :volatile t
+    :real-to-display 'helm-open-github--from-issues-format-candidate
+    :action'(("Open issue page with browser" . helm-open-github--open-issue-url)
+             ("View Diff" . helm-open-github--pulls-view-diff)
+             ("View Patch" . helm-open-github--pulls-view-patch))))
 
 ;;;###autoload
 (defun helm-open-github-from-pull-requests ()
