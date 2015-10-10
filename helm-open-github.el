@@ -173,7 +173,7 @@ Either \"asc\" or \"desc\"."
   (interactive)
   (helm :sources '(helm-open-github--from-commit-source
                    helm-open-github--from-commit-direct-input-source)
-        :buffer "*open github*"))
+        :buffer "*helm open github*"))
 
 (defun helm-open-github--collect-files ()
   (let ((root (helm-open-github--root-directory)))
@@ -243,7 +243,7 @@ Either \"asc\" or \"desc\"."
   (if mark-active
       (helm-open-github--from-file-direct (buffer-file-name) (region-beginning) (region-end))
     (helm :sources '(helm-open-github--from-file-source)
-          :buffer "*open github*")))
+          :buffer "*helm open github*")))
 
 (defun helm-open-github--collect-issues ()
   (let ((remote-url (helm-open-github--remote-url)))
@@ -346,7 +346,7 @@ Either \"asc\" or \"desc\"."
         (helm-open-github--from-issues-direct host)
       (helm :sources '(helm-open-github--from-issues-source
                        helm-open-github--from-closed-issues-source)
-            :buffer  "*open github*"))))
+            :buffer  "*helm open github*"))))
 
 (defun helm-open-github--collect-pullreqs ()
   (let ((remote-url (helm-open-github--remote-url)))
@@ -390,7 +390,7 @@ Either \"asc\" or \"desc\"."
     (if (not (string= host "github.com"))
         (helm-open-github--from-issues-direct host)
       (helm :sources '(helm-open-github--from-pulls-source)
-            :buffer  "*open github*"))))
+            :buffer  "*helm open github*"))))
 
 (provide 'helm-open-github)
 
