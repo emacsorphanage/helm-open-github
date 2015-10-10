@@ -1,5 +1,10 @@
 Revision history for helm-open-github.el
 
+Revision 0.14 2015/10/10 syohex
+   - Fix too many candidates issue(#12 Thanks thierryvolpiatto)
+   - Update minimum helm version
+   - Fix buffer name by helm way(#15 Thanks xuchunyang)
+
 Revision 0.13 2015/03/03 syohex
    - Fix wrong 'gh' version #9(Reported by nlamirault)
 
