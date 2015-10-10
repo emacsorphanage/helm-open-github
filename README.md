@@ -61,7 +61,7 @@ Issue number shown by `helm-open-github-from-commit`.(Default is 100)
 (global-set-key (kbd "C-c o p") 'helm-open-github-from-pull-requests)
 ```
 
-[melpa-link]: http://melpa.org/#/helm-open-github
-[melpa-stable-link]: http://stable.melpa.org/#/helm-open-github
-[melpa-badge]: http://melpa.org/packages/helm-open-github-badge.svg
-[melpa-stable-badge]: http://stable.melpa.org/packages/helm-open-github-badge.svg
+[melpa-link]: https://melpa.org/#/helm-open-github
+[melpa-stable-link]: https://stable.melpa.org/#/helm-open-github
+[melpa-badge]: https://melpa.org/packages/helm-open-github-badge.svg
+[melpa-stable-badge]: https://stable.melpa.org/packages/helm-open-github-badge.svg
