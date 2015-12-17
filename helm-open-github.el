@@ -353,7 +353,7 @@ Either \"asc\" or \"desc\"."
     (cl-multiple-value-bind (user repo) (helm-open-github--extract-user-host remote-url)
       (let ((issues (gh-pulls-list helm-open-github-pulls-api user repo)))
         (if (null issues)
-            (error "This repository has no issues!!")
+            (error "This repository has no pull requests!!")
           (sort (oref issues data)
                 (lambda (a b) (< (oref a number) (oref b number)))))))))
 
