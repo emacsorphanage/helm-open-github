@@ -1,6 +1,8 @@
 ;;; helm-open-github.el --- Utilities of Opening Github Page -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2015 by Syohei YOSHIDA
+;; Copyright (C) 2015 by Raimon Grau
+
 
 ;; Author: Syohei YOSHIDA <syohex@gmail.com>
 ;; URL: https://github.com/syohex/emacs-helm-open-github
@@ -55,6 +57,13 @@
 
 (defcustom helm-open-github-closed-issue-since 19
   "Only issues updated this number of days ago are returned."
+  :type 'integer
+  :group 'helm-open-github)
+
+(defcustom helm-open-github-requires-pattern 4
+  "Minimal length to search. As fetching data is an expensive
+  operation with potentially many results, higher number is
+  recomended for bigger projects or slower connections"
   :type 'integer
   :group 'helm-open-github)
 
@@ -304,6 +313,8 @@ Either \"asc\" or \"desc\"."
               (helm-init-candidates-in-buffer 'global
                 (cl-loop for c in issues
                          collect (helm-open-github--from-issues-format-candidate c)))))
+    :delayed t
+    :requires-pattern helm-open-github-requires-pattern
     :get-line 'buffer-substring
     :action '(("Open issue page with browser" . helm-open-github--open-issue-url))))
 
@@ -321,6 +332,8 @@ Either \"asc\" or \"desc\"."
                 (cl-loop for c in issues
                          collect (helm-open-github--from-issues-format-candidate c)))))
     :get-line 'buffer-substring
+    :delayed t
+    :requires-pattern helm-open-github-requires-pattern
     :action '(("Open issue page with browser" . helm-open-github--open-issue-url))))
 
 (defun helm-open-github--construct-issue-url (host remote-url issue-id)
@@ -378,6 +391,8 @@ Either \"asc\" or \"desc\"."
   (helm-build-sync-source "Open Github From Issues"
     :candidates 'helm-open-github--collect-pullreqs
     :volatile t
+    :delayed t
+    :requires-pattern helm-open-github-requires-pattern
     :real-to-display 'helm-open-github--from-issues-format-candidate
     :action '(("Open issue page with browser" . helm-open-github--open-issue-url)
               ("View Diff" . helm-open-github--pulls-view-diff)
