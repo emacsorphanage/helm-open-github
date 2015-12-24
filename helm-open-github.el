@@ -348,14 +348,16 @@ Either \"asc\" or \"desc\"."
                        helm-open-github--from-closed-issues-source)
             :buffer  "*helm open github*"))))
 
+(defvar helm-open-github--pull-requests nil)
 (defun helm-open-github--collect-pullreqs ()
   (let ((remote-url (helm-open-github--remote-url)))
     (cl-multiple-value-bind (user repo) (helm-open-github--extract-user-host remote-url)
-      (let ((issues (gh-pulls-list helm-open-github-pulls-api user repo)))
-        (if (null issues)
+      (let ((pullreqs (gh-pulls-list helm-open-github-pulls-api user repo)))
+        (if (null pullreqs)
             (error "This repository has no pull requests!!")
-          (sort (oref issues data)
-                (lambda (a b) (< (oref a number) (oref b number)))))))))
+          (setq helm-open-github--pull-requests
+                (sort (oref pullreqs data)
+                      (lambda (a b) (< (oref a number) (oref b number))))))))))
 
 (defun helm-open-github--pulls-view-common (url)
   (with-current-buffer (get-buffer-create "*open-github-diff*")
@@ -376,7 +378,8 @@ Either \"asc\" or \"desc\"."
 
 (defvar helm-open-github--from-pulls-source
   (helm-build-sync-source "Open Github From Issues"
-    :candidates 'helm-open-github--collect-pullreqs
+    :init #'helm-open-github--collect-pullreqs
+    :candidates 'helm-open-github--pull-requests
     :volatile t
     :real-to-display 'helm-open-github--from-issues-format-candidate
     :action '(("Open issue page with browser" . helm-open-github--open-issue-url)
