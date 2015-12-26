@@ -164,18 +164,19 @@ If this value is non-nil, delayed search is disabled."
      (helm-open-github--full-commit-id commit-id))))
 
 (defvar helm-open-github--from-commit-source
-  '((name . "Open Github From Commit")
-    (init . helm-open-github--collect-commit-id)
-    (candidates-in-buffer)
-    (persistent-action . helm-open-github--from-commit-id-persistent-action)
-    (action . (("Open Commit Page" . helm-open-github--from-commit-open-url)
-               ("Show Detail" . helm-open-github--show-commit-id)))))
+  (helm-build-in-buffer-source "Open Github From Commit"
+    :init #'helm-open-github--collect-commit-id
+    :persistent-action #'helm-open-github--from-commit-id-persistent-action
+    :action (helm-make-actions
+             "Open Commit Page" #'helm-open-github--from-commit-open-url
+             "Show Detail" #'helm-open-github--show-commit-id)))
 
 (defvar helm-open-github--from-commit-direct-input-source
-  '((name . "Open Github From Commit Direct Input")
-    (candidates . ("Input Commit ID"))
-    (action . (("Open Commit Page" . helm-open-github--from-commit-open-url-with-input)
-               ("Show Detail" . helm-open-github--show-commit-id-with-input)))))
+  (helm-build-sync-source "Open Github From Commit Direct Input"
+   :candidates '("Input Commit ID")
+   :action (helm-make-actions
+            "Open Commit Page" #'helm-open-github--from-commit-open-url-with-input
+            "Show Detail" #'helm-open-github--show-commit-id-with-input)))
 
 ;;;###autoload
 (defun helm-open-github-from-commit ()
@@ -227,17 +228,14 @@ If this value is non-nil, delayed search is disabled."
     (helm-open-github--from-file-action file start-line)))
 
 (defvar helm-open-github--from-file-source
-  '((name . "Open Github From File")
-    (init . helm-open-github--collect-files)
-    (candidates-in-buffer)
-    (action . (("Open File" .
-                (lambda (cand)
-                  (dolist (file (helm-marked-candidates))
-                    (helm-open-github--from-file-action file))))
-               ("Open File and Highlight Line"
-                . helm-open-github--from-file-highlight-line-action)
-               ("Open File and Highlight Region"
-                . helm-open-github--from-file-highlight-region-action)))))
+  (helm-build-in-buffer-source "Open Github From File"
+    :init #'helm-open-github--collect-files
+    :action (helm-make-actions
+             "Open File" (lambda (_cand)
+                           (dolist (file (helm-marked-candidates))
+                             (helm-open-github--from-file-action file)))
+             "Open File and Highlight Line" #'helm-open-github--from-file-highlight-line-action
+             "Open File and Highlight Region" #'helm-open-github--from-file-highlight-region-action)))
 
 (defun helm-open-github--from-file-direct (file start end)
   (let* ((root (helm-open-github--root-directory))
@@ -316,7 +314,8 @@ If this value is non-nil, delayed search is disabled."
     :delayed (not (null helm-open-github-requires-pattern))
     :requires-pattern helm-open-github-requires-pattern
     :get-line 'buffer-substring
-    :action '(("Open issue page with browser" . helm-open-github--open-issue-url))))
+    :action (helm-make-actions
+             "Open issue page with browser" #'helm-open-github--open-issue-url)))
 
 (defvar helm-open-github--closed-issues-cache (make-hash-table :test 'equal))
 (defvar helm-open-github--from-closed-issues-source
@@ -334,7 +333,8 @@ If this value is non-nil, delayed search is disabled."
     :delayed (not (null helm-open-github-requires-pattern))
     :requires-pattern helm-open-github-requires-pattern
     :get-line 'buffer-substring
-    :action '(("Open issue page with browser" . helm-open-github--open-issue-url))))
+    :action (helm-make-actions
+             "Open issue page with browser" #'helm-open-github--open-issue-url)))
 
 (defun helm-open-github--construct-issue-url (host remote-url issue-id)
   (cl-multiple-value-bind (user repo) (helm-open-github--extract-user-host remote-url)
@@ -397,9 +397,10 @@ If this value is non-nil, delayed search is disabled."
     :delayed (not (null helm-open-github-requires-pattern))
     :requires-pattern helm-open-github-requires-pattern
     :real-to-display 'helm-open-github--from-issues-format-candidate
-    :action '(("Open issue page with browser" . helm-open-github--open-issue-url)
-              ("View Diff" . helm-open-github--pulls-view-diff)
-              ("View Patch" . helm-open-github--pulls-view-patch))))
+    :action (helm-make-actions
+             "Open issue page with browser" #'helm-open-github--open-issue-url
+             "View Diff" #'helm-open-github--pulls-view-diff
+             "View Patch" #'helm-open-github--pulls-view-patch)))
 
 ;;;###autoload
 (defun helm-open-github-from-pull-requests ()
