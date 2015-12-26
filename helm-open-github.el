@@ -66,6 +66,15 @@ Either \"asc\" or \"desc\"."
           (const :tag "Descendent" "desc"))
   :group 'helm-open-github)
 
+(defcustom helm-open-github-requires-pattern nil
+  "Minimal length to search. As fetching data is an expensive
+operation with potentially many results, higher number is
+recomended for bigger projects or slower connections.
+If this value is non-nil, delayed search is disabled."
+  :type '(choice (integer :tag "Minimal length")
+                 (boolean :tag "Disable delayed search" nil))
+  :group 'helm-open-github)
+
 (defun helm-open-github--collect-commit-id ()
   (with-current-buffer (helm-candidate-buffer 'global)
     (let ((ret (call-process "git" nil t nil
@@ -304,6 +313,8 @@ Either \"asc\" or \"desc\"."
               (helm-init-candidates-in-buffer 'global
                 (cl-loop for c in issues
                          collect (helm-open-github--from-issues-format-candidate c)))))
+    :delayed (not (null helm-open-github-requires-pattern))
+    :requires-pattern helm-open-github-requires-pattern
     :get-line 'buffer-substring
     :action '(("Open issue page with browser" . helm-open-github--open-issue-url))))
 
@@ -320,6 +331,8 @@ Either \"asc\" or \"desc\"."
               (helm-init-candidates-in-buffer 'global
                 (cl-loop for c in issues
                          collect (helm-open-github--from-issues-format-candidate c)))))
+    :delayed (not (null helm-open-github-requires-pattern))
+    :requires-pattern helm-open-github-requires-pattern
     :get-line 'buffer-substring
     :action '(("Open issue page with browser" . helm-open-github--open-issue-url))))
 
@@ -381,6 +394,8 @@ Either \"asc\" or \"desc\"."
     :init #'helm-open-github--collect-pullreqs
     :candidates 'helm-open-github--pull-requests
     :volatile t
+    :delayed (not (null helm-open-github-requires-pattern))
+    :requires-pattern helm-open-github-requires-pattern
     :real-to-display 'helm-open-github--from-issues-format-candidate
     :action '(("Open issue page with browser" . helm-open-github--open-issue-url)
               ("View Diff" . helm-open-github--pulls-view-diff)

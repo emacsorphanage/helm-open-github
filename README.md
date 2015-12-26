@@ -49,7 +49,12 @@ Open pull request page from **Pull Request ID**
 
 ### `helm-open-github-commit-limit`
 
-Issue number shown by `helm-open-github-from-commit`.(Default is 100)
+Issue number shown by `helm-open-github-from-commit`.(Default: `100`)
+
+### `helm-open-github-requires-pattern`
+
+Minimal length to search. If this value is non-nil, delayed search is enabled(Default: `nil`).
+This parameter must be set before loading `helm-open-github.el`.
 
 
 ## Sample Configuration
