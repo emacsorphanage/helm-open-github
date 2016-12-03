@@ -44,11 +44,13 @@
 
 (defcustom helm-open-github-issues-api
   (gh-issues-api "api" :sync t :cache nil :num-retries 1)
-  "Github API instance. This is-a `gh-issues'")
+  "Github API instance. This is-a `gh-issues'"
+  :type 'gh-issues-api)
 
 (defcustom helm-open-github-pulls-api
   (gh-pulls-api "api" :sync t :cache nil :num-retries 1)
-  "Github API instance. This is-a `gh-pulls'")
+  "Github API instance. This is-a `gh-pulls'"
+  :type 'gh-pulls-api)
 
 (defcustom helm-open-github-closed-issue-since 19
   "Only issues updated this number of days ago are returned."
