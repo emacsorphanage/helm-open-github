@@ -40,31 +40,26 @@
 
 (defcustom helm-open-github-commit-limit 100
   "Limit of commit id collected"
-  :type 'integer
-  :group 'helm-open-github)
+  :type 'integer)
 
 (defcustom helm-open-github-issues-api
   (gh-issues-api "api" :sync t :cache nil :num-retries 1)
-  "Github API instance. This is-a `gh-issues'"
-  :group 'helm-open-github)
+  "Github API instance. This is-a `gh-issues'")
 
 (defcustom helm-open-github-pulls-api
   (gh-pulls-api "api" :sync t :cache nil :num-retries 1)
-  "Github API instance. This is-a `gh-pulls'"
-  :group 'helm-open-github)
+  "Github API instance. This is-a `gh-pulls'")
 
 (defcustom helm-open-github-closed-issue-since 19
   "Only issues updated this number of days ago are returned."
-  :type 'integer
-  :group 'helm-open-github)
+  :type 'integer)
 
 (defcustom helm-open-github-closed-issue-sort-direction "asc"
   "Direction of the sort for closed issues.
 Either \"asc\" or \"desc\"."
   :type '(radio :tag "Preferred direction of the sort"
           (const :tag "Ascendent" "asc")
-          (const :tag "Descendent" "desc"))
-  :group 'helm-open-github)
+          (const :tag "Descendent" "desc")))
 
 (defcustom helm-open-github-requires-pattern nil
   "Minimal length to search. As fetching data is an expensive
@@ -72,8 +67,7 @@ operation with potentially many results, higher number is
 recomended for bigger projects or slower connections.
 If this value is non-nil, delayed search is disabled."
   :type '(choice (integer :tag "Minimal length")
-                 (boolean :tag "Disable delayed search" nil))
-  :group 'helm-open-github)
+                 (boolean :tag "Disable delayed search" nil)))
 
 (defun helm-open-github--collect-commit-id ()
   (with-current-buffer (helm-candidate-buffer 'global)
