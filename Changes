@@ -1,5 +1,9 @@
 Revision history for helm-open-github.el
 
+Revision 0.15 2016/12/03 syohex
+   - Require Emacs 24.4 or higher versions
+   - Use newer helm interfaces
+
 Revision 0.14 2015/10/10 syohex
    - Fix too many candidates issue(#12 Thanks thierryvolpiatto)
    - Update minimum helm version
