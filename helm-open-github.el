@@ -277,7 +277,8 @@ If this value is non-nil, delayed search is disabled."
       (let ((issues (gh-issues-issue-list-closed helm-open-github-issues-api user repo)))
         (if (null issues)
             (error "This repository has no issues!!")
-            (oref issues data))))))
+            (sort (oref issues data)
+                  (lambda (a b) (> (oref a number) (oref b number)))))))))
 
 (defun helm-open-github--convert-issue-api-url (url)
   (replace-regexp-in-string
