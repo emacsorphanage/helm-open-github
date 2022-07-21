@@ -5,7 +5,7 @@
 ;; Author: Syohei YOSHIDA <syohex@gmail.com>
 ;; URL: https://github.com/syohex/emacs-helm-open-github
 ;; Version: 0.15
-;; Package-Requires: ((emacs "24.4") (helm-core "1.7.7") (gh "0.8.2"))
+;; Package-Requires: ((emacs "24.4") (helm-core "3.6.0") (gh "0.8.2"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@
 
 (require 'cl-lib)
 
-(require 'helm)
+(require 'helm-core)
 (require 'gh-issues)
 (require 'gh-pulls)
 
